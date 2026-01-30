@@ -1,0 +1,46 @@
+{
+  "name": "currency-2-u",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon src/server.ts --watch 'src/' -e ts",
+    "compile": "npx tsx",
+    "start": "node ./dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henriqk0/currency-2-u.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/henriqk0/currency-2-u/issues"
+  },
+  "homepage": "https://github.com/henriqk0/currency-2-u#readme",
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "axios": "^1.13.0",
+    "bcrypt": "^6.0.0",
+    "bullmq": "^5.67.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.19.2",
+    "morgan": "^1.10.1",
+    "node-cron": "^4.2.1",
+    "prisma": "^6.18.0",
+    "puppeteer": "^24.26.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.4",
+    "@types/morgan": "^1.9.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

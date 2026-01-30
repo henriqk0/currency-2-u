@@ -1,0 +1,22 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+
+# Build artifacts
+build/
+dist/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files (adjust as needed)
+.vscode/
+.idea/
+
+/src/generated/prisma
+/data

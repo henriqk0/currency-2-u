@@ -1,0 +1,28 @@
+generator client {
+  provider      = "prisma-client"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"] 
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Acronyms {
+  BRL
+  USD
+  ETH
+  EUR
+  BTC
+}
+
+model User {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  email               String    @unique
+  password            String
+  currencyInLabel     Acronyms
+  currencyInValue     Float
+  currencyOutLabel    Acronyms
+  currencyOutValue    Float
+}
