@@ -13,7 +13,6 @@ export class UserRepository implements IUserRepository {
     return await prisma.user.findUnique({ where: { email } });
   }
 
-  // dont will exist (will return a quantity or page, but never all records)
   async findAll(): Promise<User[]> {
     return await prisma.user.findMany();
   }

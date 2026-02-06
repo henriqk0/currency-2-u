@@ -32,9 +32,10 @@ services:
     networks: 
       - backend-network
 
-  app:
+  app-api:
+    image: backend-image
     build: .
-    container_name: app-backend
+    command: sh -c "pnpm prisma db push && pnpm run start:api"
     ports:
       - "${PORT}:${PORT}"
     depends_on:
@@ -45,6 +46,33 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+    networks:
+      - backend-network
+
+  app-scheduler:
+    image: backend-image
+    build: .
+    command: npm run start:cron
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
+    depends_on:
+      - redis
+    networks:
+      - backend-network
+
+  app-worker:
+    image: backend-image
+    build: .
+    command: npm run start:worker
+    environment:
+      - REDIS_HOST=redis
+      - EMAIL_USER=${EMAIL_USER}
+      - GOOGLE_APP_PASSWORD=${GOOGLE_APP_PASSWORD}
+    depends_on:
+      - redis
     networks:
       - backend-network
 

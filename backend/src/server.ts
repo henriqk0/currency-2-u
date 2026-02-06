@@ -1,8 +1,3 @@
-import cron = require('node-cron');
-cron.schedule('*/15 * * * *', () => {
-  console.log('starting scraping...')
-})
-
 import dotenv from 'dotenv';
 dotenv.config();
 

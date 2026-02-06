@@ -8,6 +8,9 @@ export interface ICreateUserData {
   currencyInValue: number;
   currencyOutLabel: Acronyms;
   currencyOutValue: number;
+  lastSend: Date | null;
+  minIntervalSend: number;
+  toSell: boolean;
 }
 
 export interface IUpdateUserData {
@@ -17,6 +20,9 @@ export interface IUpdateUserData {
   currencyInValue?: number;
   currencyOutLabel?: Acronyms;
   currencyOutValue?: number;
+  lastSend?: Date | null;
+  minIntervalSend?: number;
+  toSell?: boolean;
 }
 
 export interface IUserRepository {
