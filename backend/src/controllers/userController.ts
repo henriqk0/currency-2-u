@@ -9,7 +9,7 @@ const userService = new UserService(userRepository);
 
 export class UserController {
 
-  // only to debug (remove this later, in production)
+  // only to debug (not acessible)
   async getUsers(req: Request, res: Response): Promise<Response> {
     const users = await userService.getAllUsers();
     return res.json(users);
