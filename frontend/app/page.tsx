@@ -1,32 +1,30 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Field } from "@/components/ui/field"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group"
-import { EyeOffIcon } from "lucide-react"
+import { LoginForm } from '@/components/(auth)/login/login-form';
 import Image from 'next/image'
-import Link from "next/link"
-
-
 
 const imageStyle = {
   width: 'auto',
   height: 'auto',
+  max_width: '100vh'
 }
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center lg:flex-row">
-      <div className="w-[100%] h-[15vh] bg-linear-to-r from-neutral-200 to-neutral-400/70 lg:w-[60%] lg:h-[100vh]">
-        <div className="flex h-[100%] flex-col">
-          <span className="flex text-2xl p-4 font-light h-full items-center justify-center lg:px-0 font-spam-header">Monitor and be alerted about currency values</span>
+
+      <div className="w-full h-[15vh] bg-linear-to-r from-neutral-200 to-neutral-400/70 lg:w-[60%] lg:h-screen">
+
+        <div className="relative flex h-full flex-col justify-center lg:justify-end">
+
+          <div className="self-center flex flex-col md:flex-row z-20 lg:absolute top-10 ">
+            <span 
+              className="h-full text-2xl ml-4 flex lg:px-0 font-spam-header md:py-4"
+              >Monitor and be alerted about currency values to</span>
+            <span className="h-full text-2xl flex pl-4 font-accent-header font-bold text-green-800 md:pr-4 md:pl-0 md:ml-[6px] md:py-4">save your money</span>
+          </div>
 
           <Image 
-            alt="SideArt"
-            className="hidden lg:block"
+            alt="MoneyStacksArt"
+            className="hidden lg:block z-10"
             src="/money_stacks.png"
             width={100}
             height={100}
@@ -35,35 +33,11 @@ export default function Home() {
             unoptimized 
           />
         </div>
+
       </div>
       
       <div className="h-[85vh] lg:w-[40%] lg:h-[100vh] flex items-right justify-center font-sans">
-
-        <div className="flex items-right flex-col justify-center px-8 min-w-[80%]">
-          <h3 className="mb-8 text-lg font-bold ">Log into Currency2You</h3>
-
-          <div className="flex flex-col items-center">
-            <Input placeholder="Email" className="mb-3"></Input>
-
-            <Field>
-              <InputGroup>
-                <InputGroupInput
-                  id="inline-end-input"
-                  type="password"
-                  placeholder="Password"
-                />
-                <InputGroupAddon align="inline-end">
-                  <EyeOffIcon />
-                </InputGroupAddon>
-              </InputGroup>
-            </Field>
-            <Button className="w-full mt-5">Log in</Button>
-
-            <Link href="/register" className="w-full mt-12">
-              <Button variant="outline" className="w-[100%]">Create new account</Button>
-            </Link>
-          </div>
-        </div>
+        <LoginForm></LoginForm>
       </div>
     </div>
   );

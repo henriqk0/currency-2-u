@@ -120,6 +120,9 @@
   .font-spam-header {
     font-family: var(--font-spam-header)
   }
+  .font-accent-header {
+    font-family: var(--font-accent-header)
+  }
 }
 
 @layer base {
@@ -132,5 +135,6 @@
 }
 
 body {
-  --font-spam-header: var(--font-vend-sans)
+  --font-spam-header: var(--font-vend-sans);
+  --font-accent-header: var(--font-zalando-sans-expanded);
 }
