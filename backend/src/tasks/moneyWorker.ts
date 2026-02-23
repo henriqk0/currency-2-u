@@ -39,6 +39,8 @@ export async function pickCurrencyValuesAndFillEmailQueue () {
     ) {
       const job: EmailJobData = {email: user.email, data: currentUserDesirableCurrencyValues!}
 
+      await userService.setNewLastSendedEmail(user.id)
+
       mailQueue.addBulk([{
         name: 'send-notification',
         data: job

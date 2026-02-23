@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link"
 import { useState } from "react";
+import { redirect } from "next/navigation"
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -44,9 +45,16 @@ function LoginForm() {
         throw new Error(data.message || "Login error");
       }
 
+      localStorage.setItem('token', JSON.stringify(data))
+      const auth = JSON.parse(localStorage.getItem('token')!) 
+      console.log(auth.user, auth.token)
+
       console.log("Success login:", data);
+
+      redirect('/profile')
+
     } catch (error) {
-      console.error("Erro:", error);
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }

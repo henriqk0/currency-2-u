@@ -75,6 +75,20 @@ export class UserService {
       await this.userRepository.delete(id);
   }
 
+  async setNewLastSendedEmail(id: string): Promise<void> {
+      const userExists = await this.userRepository.findById(id);
+      if (!userExists) {
+          throw new Error('User not found to change last email send date.');
+      }
+
+      const currentDate = new Date()
+      const updateUserDate: IUpdateUserData = {
+        lastSend: currentDate 
+      }
+
+      await this.userRepository.update(id, updateUserDate)
+  }
+
   async canSendEmail(id: string): Promise<boolean> {
     const userExists = await this.userRepository.findById(id);
     if (!userExists) {
