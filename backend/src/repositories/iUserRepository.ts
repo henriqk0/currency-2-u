@@ -14,7 +14,6 @@ export interface ICreateUserData {
 }
 
 export interface IUpdateUserData {
-  email?: string;
   password?: string;
   currencyInLabel?: Acronyms;
   currencyInValue?: number;

@@ -17,10 +17,11 @@ import { Spinner } from "@/components/ui/spinner"
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link"
 import { useState } from "react";
-import { redirect } from "next/navigation"
 import { CurrencyInputGroup } from "./currency-input-group"
 import { useBoolean } from "@/hooks/use-boolean"
 import { Switch } from "@/components/ui/switch"
+import { useRouter } from "next/navigation"
+import { showToast } from "nextjs-toast-notify"
 
 
 interface ICreateUserData {
@@ -35,12 +36,14 @@ interface ICreateUserData {
 }
 
 function RegisterForm() {
+  const router = useRouter()
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [currencyInLabel, setCurrencyInLabel] = useState<"USD" | "EUR" | "BRL" | "BTC" | "ETH">("USD"); // use zod to validate this
-  const [currencyInValue, setCurrencyInValue] = useState("");
+  const [currencyInValue, setCurrencyInValue] = useState(0);
   const [currencyOutLabel, setCurrencyOutLabel] = useState<"USD" | "EUR" | "BRL" | "BTC" | "ETH">("USD");
-  const [currencyOutValue, setCurrencyOutValue] = useState("");
+  const [currencyOutValue, setCurrencyOutValue] = useState(0);
   const [minIntervalSend, setMinIntervalSend] = useState(0);
 
   const [showPassword, setShowPassword] = useState(true);
@@ -64,9 +67,7 @@ function RegisterForm() {
         toSell: value 
       } 
 
-      console.log(bodyRequest)
-
-      const response = await fetch(`/api/users`,
+      const response = await fetch(`/external-api/users`,
         {
           method: "POST",
           headers: {
@@ -80,19 +81,31 @@ function RegisterForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login error");
+        throw new Error(data.error || "Register error");
       }
 
-      localStorage.setItem('token', JSON.stringify(data))
-      const auth = JSON.parse(localStorage.getItem('token')!) 
-      console.log(auth.user, auth.token)
+      showToast.success("Registration successfully", {
+        duration: 4000,
+        progress: true,
+        position: "top-right",
+        transition: "fadeIn",
+        icon: '',
+        sound: true,
+      });
 
-      console.log("Success login:", data);
-
-      redirect('/profile')
+      router.push('/') 
 
     } catch (error) {
-      console.error("Error:", error);
+
+      showToast.error(`${error}`, {
+        duration: 4000,
+        progress: true,
+        position: "top-right",
+        transition: "fadeIn",
+        icon: '',
+        sound: true,
+      });
+
     } finally {
       setLoading(false);
     }
@@ -111,6 +124,7 @@ function RegisterForm() {
           <FieldLabel htmlFor="currencyInValue-input">Currency from</FieldLabel>
 
           <CurrencyInputGroup
+            idInput="currencyInValue-input"
             value={currencyInValue}
             currency={currencyInLabel}
             onValueChange={setCurrencyInValue}
@@ -122,6 +136,7 @@ function RegisterForm() {
           <FieldLabel htmlFor="currencyOutValue-input">Currency to</FieldLabel>
 
           <CurrencyInputGroup
+            idInput="currencyOutValue-input"
             value={currencyOutValue}
             currency={currencyOutLabel}
             onValueChange={setCurrencyOutValue}

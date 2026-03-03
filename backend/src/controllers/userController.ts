@@ -23,6 +23,18 @@ export class UserController {
       currencyInLabel: user.currencyInLabel as Acronyms
     }
 
+    const targetCurrencyInValue = userDto.currencyInValue
+    if (targetCurrencyInValue <= 0) {
+      return res.status(400).json({error: "Desired currency needs to be positive"})
+    }
+
+
+    const targetCurrencyOutValue = userDto.currencyOutValue
+    if (targetCurrencyOutValue <= 0) {
+      return res.status(400).json({error: "Base currency needs to be positive"})
+    }
+
+
     const result = await userService.createUser(userDto);
 
     if (result)
@@ -54,6 +66,16 @@ export class UserController {
     try {
       const targetUserId = req.params.id;
       const authenticatedUserId = req.userId; 
+
+      const targetCurrencyInValue = req.body.currencyInValue
+      if (targetCurrencyInValue <= 0) {
+        return res.status(400).json({error: "Desired currency needs to be positive"})
+      }
+
+      const targetCurrencyOutValue = req.body.currencyOutValue
+      if (targetCurrencyOutValue <= 0) {
+        return res.status(400).json({error: "Base currency needs to be positive"})
+      }
 
       if (targetUserId !== authenticatedUserId) {
         return res.status(403).json({error: "Forbidden: You can only update your own account."})

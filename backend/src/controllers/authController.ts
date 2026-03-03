@@ -16,9 +16,9 @@ export class AuthController {
         return res.status(400).json({ error: 'Email and password are required' });
       }
       
-      const { token } = await authService.login({ email, password });
+      const { token, user } = await authService.login({ email, password });
 
-      return res.status(200).json({ token });
+      return res.status(200).json({ token, user });
     } catch (err: any) {
       return res.status(401).json({ error: err.message });
     }

@@ -12,9 +12,12 @@ import { Spinner } from "@/components/ui/spinner"
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link"
 import { useState } from "react";
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
+import { showToast } from "nextjs-toast-notify"
 
 function LoginForm() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -42,19 +45,31 @@ function LoginForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login error");
+        throw new Error(data.error || "Login error");
       }
 
-      localStorage.setItem('token', JSON.stringify(data))
-      const auth = JSON.parse(localStorage.getItem('token')!) 
-      console.log(auth.user, auth.token)
+      showToast.success("Login successfully", {
+        duration: 4000,
+        progress: true,
+        position: "top-right",
+        transition: "fadeIn",
+        icon: '',
+        sound: true,
+      });
 
-      console.log("Success login:", data);
-
-      redirect('/profile')
+      router.push('/profile')
 
     } catch (error) {
-      console.error("Error:", error);
+
+      showToast.error(`${error}`, {
+        duration: 4000,
+        progress: true,
+        position: "top-right",
+        transition: "fadeIn",
+        icon: '',
+        sound: true,
+      });
+
     } finally {
       setLoading(false);
     }

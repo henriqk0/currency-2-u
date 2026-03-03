@@ -19,14 +19,16 @@ const currencies = {
 }
 
 type Props = {
-  value: string
+  value: number
+  idInput: string
   currency: keyof typeof currencies
-  onValueChange: (value: string) => void
+  onValueChange: (value: number) => void
   onCurrencyChange: (currency: keyof typeof currencies) => void
 }
 
 export function CurrencyInputGroup({
   value,
+  idInput,
   currency,
   onValueChange,
   onCurrencyChange,
@@ -41,11 +43,12 @@ export function CurrencyInputGroup({
       </div>
 
       <Input
+        id={idInput}
         type="number"
         step="0.01"
         min="0"
         value={value}
-        onChange={(e) => onValueChange(e.target.value)}
+        onChange={(e) => onValueChange(Number(e.target.value))}
         placeholder="0.00"
         className="rounded-none border-x-0 focus-visible:ring-0"
       />

@@ -30,6 +30,7 @@ export default function Home() {
             height={100}
             sizes="100vw"
             style={imageStyle}
+            loading='eager'
             unoptimized 
           />
         </div>

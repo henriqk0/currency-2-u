@@ -20,6 +20,9 @@ importers:
       next:
         specifier: 16.1.6
         version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      nextjs-toast-notify:
+        specifier: ^1.58.0
+        version: 1.58.0
       radix-ui:
         specifier: ^1.4.3
         version: 1.4.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -2944,6 +2947,9 @@ packages:
         optional: true
       sass:
         optional: true
+
+  nextjs-toast-notify@1.58.0:
+    resolution: {integrity: sha512-fnziZfwUqvmrKwFPlAEafflsi/D5dKnwm/Ux0mmDGqsaALgKUap7aOt305bp+sujJSvwAB2kJIvUMEBq8Ff9GQ==}
 
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
@@ -6737,6 +6743,8 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+
+  nextjs-toast-notify@1.58.0: {}
 
   node-domexception@1.0.0: {}
 

@@ -42,13 +42,6 @@ export class AuthService {
 
     const userResponse = { 
       id: user.id,
-      email: user.email,
-      currencyInLabel: user.currencyInLabel,
-      currencyInValue: user.currencyInValue,
-      currencyOutLabel: user.currencyOutLabel,
-      currencyOutValue: user.currencyOutValue,
-      minIntervalSend: user.minIntervalSend,
-      toSell: user.toSell
     }
 
     return { token, user: userResponse};
