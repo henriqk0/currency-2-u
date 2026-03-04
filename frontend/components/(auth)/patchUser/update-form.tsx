@@ -88,7 +88,7 @@ function UpdateUserForm({token, id, userData }: UpdateProps) {
     >
 
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-fit">Update</Button>
+        <Button variant="outline" className="w-fit">Edit Profile</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <form

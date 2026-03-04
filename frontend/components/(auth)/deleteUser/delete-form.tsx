@@ -1,17 +1,20 @@
 "use client"
 
 import { deleteData } from "@/app/actions/delete-user";
-import { callLogout } from "@/app/api/auth/logout/route";
 import { DeleteProps } from "@/app/types/delete-user";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
+import { useLogout } from "@/hooks/useLogout";
 import { showToast } from "nextjs-toast-notify";
 import { startTransition, useState } from "react";
 
 
 function DeleteUserForm({token, id }: DeleteProps) {
   const [loading, setLoading] = useState(false);
+
+  const logout = useLogout()
+  
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault(); 
@@ -47,7 +50,7 @@ function DeleteUserForm({token, id }: DeleteProps) {
           sound: true,
         });
 
-        await callLogout()
+        await logout()
 
       } finally {
         setLoading(false);
@@ -58,7 +61,7 @@ function DeleteUserForm({token, id }: DeleteProps) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="outline">Delete</Button>
+        <Button variant="outline">Delete Profile</Button>
       </DialogTrigger>
 
       <DialogContent>
