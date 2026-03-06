@@ -10,10 +10,6 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendEmail(to: string, data: NumberTuple) {
-  console.log({
-    EMAIL_USER: process.env.EMAIL_USER,
-    GOOGLE_APP_PASSWORD: process.env.GOOGLE_APP_PASSWORD ? 'OK' : 'MISSING',
-  });
 
   try {
     const info = await transporter.sendMail({
@@ -26,9 +22,7 @@ export async function sendEmail(to: string, data: NumberTuple) {
       `,
     });
 
-    console.log("E-mail sent: %s", info.messageId);
   } catch (error) {
-    console.error("Error:", error);
     throw error; 
   }
 }
