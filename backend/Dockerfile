@@ -30,4 +30,4 @@ COPY . .
 
 RUN pnpm prisma generate
 
-RUN pnpm run build
+RUN pnpm run build --omit dev

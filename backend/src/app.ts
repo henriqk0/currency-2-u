@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import helmet from 'helmet'; 
 import userRouter from './routers/userRouter';
 import authRouter from './routers/authRouter';
+import { processPendingEmails } from './onDemandEmailSender';
 
 const app: Express = express();
 
@@ -31,6 +32,15 @@ app.use(express.json());
 
 app.use('/api/users/', userRouter);
 app.use('/api/auth/', authRouter);
+
+app.post('/internal/process-emails', async (req, res) => {
+  if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).send('Unauthorized')
+  }
+
+  await processPendingEmails()
+  res.status(200).send('Processed')
+})
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.sendStatus(200);
