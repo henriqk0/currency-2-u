@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import userRouter from './routers/userRouter';
 import authRouter from './routers/authRouter';
 import { processPendingEmails } from './onDemandEmailSender';
+import { pickCurrencyValuesAndFillEmailQueue } from './tasks/moneyWorker';
 
 const app: Express = express();
 
@@ -37,6 +38,7 @@ app.post('/internal/process-emails', async (req, res) => {
   if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).send('Unauthorized')
   }
+  await pickCurrencyValuesAndFillEmailQueue()
 
   await processPendingEmails()
   res.status(200).send('Processed')

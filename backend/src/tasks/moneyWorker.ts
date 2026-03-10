@@ -100,7 +100,7 @@ async function obtainConversionTable(): Promise<ConversionTableDictFormatted> {
     ETH: {
       BTC: ethBTC,
       USD: ethUSD,
-      EUR: ethBRL,
+      EUR: ethEUR,
       BRL: ethBRL,
     },
     BTC: {
