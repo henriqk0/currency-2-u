@@ -1,4 +1,4 @@
-import { redisConfig } from "../config/redis";
+import { redisConnection } from "../config/redisConnection";
 import { UserRepository } from "../repositories/userRepository";
 import { UserService } from "../services/userService";
 import { NumberTuple, ConversionTableDictFormatted } from "../types/acronymWithValueTuple";
@@ -7,7 +7,7 @@ import { EmailJobData } from "../types/emailJobData";
 
 const puppeteer = require("puppeteer")
 
-const mailQueue = new Queue('email-notifications', redisConfig);
+const mailQueue = new Queue('email-notifications', redisConnection);
 
 const userService = new UserService(new UserRepository);
 

@@ -1,11 +1,14 @@
 import { Queue } from 'bullmq'
-import { redisConfig } from "./config/redis"
+// import { redis } from "./lib/redis"
 import { sendEmail } from "./services/emailService"
 import { EmailJobData } from "./types/emailJobData"
+import { redisConnection2 } from './config/redisConnection'
 
 const queue = new Queue<EmailJobData>(
-  'email-notifications',
-  redisConfig
+  'email-notifications', 
+  {
+    connection: redisConnection2
+  }
 )
 
 export async function processPendingEmails() {
