@@ -10,12 +10,8 @@ const omitPassword = (user: User) => {
 function daysSinceOrNull(date: Date): number | null {
   if (!date) return null;
 
-  const today = new Date();
-  const init = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-  const end = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-  
-  const diffMs = end.getTime() - init.getTime()
-  return Math.floor(diffMs / ( 1000 * 60 * 60 * 24 ))
+  const diff = Date.now() - new Date(date).getTime()
+  return Math.floor(diff / (1000 * 60 * 60 * 24))
 }
 
 export class UserService {
@@ -97,8 +93,12 @@ export class UserService {
     
     const lastEmailSentDate = userExists.lastSend
 
-    const daysSinceReference = lastEmailSentDate ? daysSinceOrNull(lastEmailSentDate): 0
+    const daysSinceReference = lastEmailSentDate ? Number(daysSinceOrNull(lastEmailSentDate)): 0
 
-    return (daysSinceReference === null || (daysSinceReference > userExists.minIntervalSend && userExists.minIntervalSend > 0))
+    const interval = Number(userExists.minIntervalSend)
+
+    if (daysSinceReference === null) return true
+
+    return daysSinceReference >= interval
   }
 }

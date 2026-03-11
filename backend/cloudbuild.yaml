@@ -1,0 +1,13 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "us-central1-docker.pkg.dev/project-dba375cc-4ab9-4029-8df/currency2u/backend-api"
+      - "."
+
+images:
+  - "us-central1-docker.pkg.dev/project-dba375cc-4ab9-4029-8df/currency2u/backend-api"
+
+options:
+  logging: CLOUD_LOGGING_ONLY

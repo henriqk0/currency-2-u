@@ -1,4 +1,4 @@
-import { redisConnection } from "../config/redisConnection";
+import { redisConnection2 } from "../config/redisConnection";
 import { UserRepository } from "../repositories/userRepository";
 import { UserService } from "../services/userService";
 import { NumberTuple, ConversionTableDictFormatted } from "../types/acronymWithValueTuple";
@@ -7,7 +7,11 @@ import { EmailJobData } from "../types/emailJobData";
 
 const puppeteer = require("puppeteer")
 
-const mailQueue = new Queue('email-notifications', redisConnection);
+const mailQueue = new Queue('email-notifications', 
+  {
+    connection: redisConnection2
+  }
+);
 
 const userService = new UserService(new UserRepository);
 
@@ -24,7 +28,7 @@ export async function pickCurrencyValuesAndFillEmailQueue () {
     const userOutValue = user.currencyOutValue 
     const userToSell = user.toSell 
 
-    const currentUserDesirableCurrencyValues = conversionTable[userOutLabel]![userInLabel]
+    const currentUserDesirableCurrencyValues = conversionTable[userInLabel]![userOutLabel]
     
     const isSandable: boolean = await userService.canSendEmail(user.id)
 
@@ -128,26 +132,15 @@ async function runScrapper(fromAcronym: string, toAcronym: string): Promise<Numb
 
   try {
     const page = await browser.newPage();
-    await page.goto(`https://www.oanda.com/currency-converter/pt/?from=${fromAcronym}&to=${toAcronym}&amount=1`);
+    await page.goto(`https://www.google.com/finance/quote/${fromAcronym}-${toAcronym}`);
 
-    const values = await page.evaluate(() => {
-      const values = Array.from(document.querySelectorAll(".MuiGrid-root"))
+    const value = await page.$eval('.YMlKec.fxKbKc', (el: { textContent: string; }) => el.textContent.trim());
 
-      const data = values.map((value) => ({
-        value: value.querySelector(".MuiFilledInput-input")?.getAttribute("value"),
-      }));
+    const currencyNumber = Number(value.replace(/,/g, ''));
 
-      const a = data
-        .filter((v) => v.value)
-        .filter((v, i, self) => 
-          self.findIndex(x => x.value === v.value) === i // to select only the first value
-        );
+    console.log(`[ 1, ${currencyNumber} ]`)
 
-      return a;
-    });
-
-    console.log(values);
-    return [values[0].value, values[1].value];
+    return [1, currencyNumber];
     
   } catch (error) { 
     console.error("Cannot obtain money values")
