@@ -127,7 +127,7 @@ function UpdateUserForm({token, id, userData }: UpdateProps) {
             </Field>
 
             <Field>
-              <Label htmlFor="to-sell-to-buy">To sell / To buy</Label>
+              <Label htmlFor="to-sell-to-buy">To buy / To sell</Label>
               <Switch id="to-sell-to-buy" checked={value} onCheckedChange={toggle} />
             </Field>
 
