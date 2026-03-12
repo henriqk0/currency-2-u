@@ -68,7 +68,7 @@ export default async function Profile() {
         </div>
         <div className="w-full items-center justify-center">
           <h4 className="font-accent-header text-5xl py-3">Welcome!</h4>
-          <p className="text-muted-foreground">{user.toSell ? `Now, you're desiring buy ${user.currencyInValue} ${user.currencyInLabel} for ${user.currencyOutValue} ${user.currencyOutLabel}` : `Now, you're desiring sell ${user.currencyInValue} ${user.currencyInLabel} for ${user.currencyOutValue} ${user.currencyOutLabel}`}</p>
+          <p className="text-muted-foreground">{user.toSell ? `Now, you're desiring sell ${user.currencyInValue} ${user.currencyInLabel} for ${user.currencyOutValue} ${user.currencyOutLabel}` : `Now, you're desiring buy ${user.currencyInValue} ${user.currencyInLabel} for ${user.currencyOutValue} ${user.currencyOutLabel}`}</p>
         </div>
         <div className="flex flex-row justify-end px-3 gap-2">
           <UpdateUserForm token={token!} id={user.id} userData={user}></UpdateUserForm>
