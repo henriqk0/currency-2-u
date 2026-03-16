@@ -1,4 +1,4 @@
-import { redisConnection } from "./config/redisConnection";
+import { redisConnectionDev } from "./config/redisConnection";
 import { Worker, Job } from 'bullmq';
 import { EmailJobData } from "./types/emailJobData";
 import { sendEmail } from "./services/emailService";
@@ -14,7 +14,7 @@ const worker = new Worker<EmailJobData>(
         
         await sendEmail(email, data);
     }, { 
-    ...redisConnection,
+    ...redisConnectionDev,
     concurrency: 5 // max simultaneous email sending 
 });
 

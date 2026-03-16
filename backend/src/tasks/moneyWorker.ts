@@ -1,4 +1,4 @@
-import { redisConnection2 } from "../config/redisConnection";
+import { redisConnectionProd } from "../config/redisConnection";
 import { UserRepository } from "../repositories/userRepository";
 import { UserService } from "../services/userService";
 import { NumberTuple, ConversionTableDictFormatted } from "../types/acronymWithValueTuple";
@@ -9,7 +9,7 @@ const puppeteer = require("puppeteer")
 
 const mailQueue = new Queue('email-notifications', 
   {
-    connection: redisConnection2
+    connection: redisConnectionProd
   }
 );
 

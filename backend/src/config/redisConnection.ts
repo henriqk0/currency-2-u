@@ -1,20 +1,14 @@
 import Redis, { RedisOptions } from 'ioredis'
 
-const isProduction = !!process.env.REDIS_HOST
-
-
-export const redisConnection: { connection: RedisOptions} = {
-  // production || local, respectively 
+export const redisConnectionDev: { connection: RedisOptions} = {
   connection: {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: Number(process.env.REDIS_PORT) || 6379,
-    password: process.env.REDIS_PASSWORD || '',
-    maxRetriesPerRequest: null,
-    ...(isProduction ? { tls: { rejectUnauthorized: true } } : {}), 
+    host: 'redis',
+    port: 6379,
   }
 };
 
+const redisURL: string = process.env.REDIS_URL! || 'redis://redis:6379'
 
-export const redisConnection2 = new Redis(process.env.REDIS_URL as string, {
+export const redisConnectionProd = new Redis(redisURL as string, {
   maxRetriesPerRequest: null,
 });
