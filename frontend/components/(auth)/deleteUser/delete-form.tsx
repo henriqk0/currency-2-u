@@ -29,6 +29,8 @@ function DeleteUserForm({token, id }: DeleteProps) {
         }
 
         await deleteData(deleteProps)
+        
+        await logout()
 
         showToast.success("Successfully deleted", {
           duration: 4000,
