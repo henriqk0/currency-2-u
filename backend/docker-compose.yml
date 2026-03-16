@@ -34,7 +34,9 @@ services:
 
   app-api:
     image: backend-image
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
     command: sh -c "pnpm prisma db push && pnpm run start:api"
     ports:
       - "${PORT}:${PORT}"
@@ -51,7 +53,9 @@ services:
 
   app-scheduler:
     image: backend-image
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
     command: npm run start:cron
     environment:
       - DATABASE_URL=${DATABASE_URL}
@@ -65,7 +69,9 @@ services:
 
   app-worker:
     image: backend-image
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
     command: npm run start:worker
     environment:
       - REDIS_HOST=redis
