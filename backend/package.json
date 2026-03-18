@@ -10,7 +10,7 @@
     "start:api": "node ./dist/src/server.js",
     "start:cron": "node ./dist/src/cron.js",
     "start:worker": "node ./dist/src/worker.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -50,7 +50,10 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/nodemailer": "^7.0.9",
+    "@types/supertest": "^7.2.0",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
   }
 }
