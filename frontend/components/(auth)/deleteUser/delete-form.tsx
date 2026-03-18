@@ -41,9 +41,10 @@ function DeleteUserForm({token, id }: DeleteProps) {
           sound: true,
         });
 
-      } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
 
-        showToast.error(`${error}`, {
+        showToast.error(error.message || `${error}`, {
           duration: 4000,
           progress: true,
           position: "top-right",

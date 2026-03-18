@@ -1,28 +1,45 @@
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:6.0.5
     container_name: mongo-db
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    platform: linux/amd64
     ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
     networks:
       - backend-network
-
-  mongo-init:
-    image: mongo:latest
-    depends_on:
-      - mongo
-    restart: "no"
-    volumes:
-      - ./initReplica.sh:/initReplica.sh:ro
-    entrypoint: ["sh", "/initReplica.sh"]
-    networks:
-      - backend-network
+    command: >
+      bash -c "
+        mongod --replSet rs0 --bind_ip_all &
+        sleep 5
+        mongosh --eval '
+          try {
+            rs.initiate({_id:\"rs0\", members:[{_id:0, host:\"mongo:27017\"}]})
+          } catch(e) { print(\"RS exists\") }'
+        wait
+      "
+    healthcheck:
+      test: >
+        bash -c "
+          mongosh --quiet --eval '
+            PRIMARY_READY = false;
+            for(i=0;i<20;i++){
+              try {
+                rs = rs.status();
+                if(rs.myState == 1){ PRIMARY_READY = true; break; }
+              } catch(e) {}
+              sleep(1);
+            }
+            if(!PRIMARY_READY){ exit(1); }'
+        "
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   redis:
-    image: redis:8-alpine
+    image: redis:8.0-alpine
     container_name: redis-cache
     restart: always
     ports:
@@ -41,9 +58,10 @@ services:
     ports:
       - "${PORT}:${PORT}"
     depends_on:
-      - mongo
-      - mongo-init
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - REDIS_HOST=redis
@@ -63,7 +81,10 @@ services:
       - REDIS_PORT=6379
       - PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
     depends_on:
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - backend-network
 
@@ -78,7 +99,10 @@ services:
       - EMAIL_USER=${EMAIL_USER}
       - GOOGLE_APP_PASSWORD=${GOOGLE_APP_PASSWORD}
     depends_on:
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - backend-network
 

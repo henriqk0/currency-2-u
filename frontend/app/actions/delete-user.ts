@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { DeleteProps } from "../types/delete-user";
+import { getErrorMessage } from "@/lib/utils";
 
 
 export async function deleteData(props: DeleteProps) {
@@ -16,8 +17,15 @@ export async function deleteData(props: DeleteProps) {
     }
   );
 
-  if (response.status !== 204) {
-    throw new Error("Deletion error");
+  if (!response.ok) {
+    let data;
+    try {
+      data = await response.json();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
+      // Not JSON
+    }
+    throw new Error(getErrorMessage(data) || "Deletion error");
   }
 
   revalidatePath("/profile");

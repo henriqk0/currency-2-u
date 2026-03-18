@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/authService";
-
 import { UserRepository } from "../repositories/userRepository";
-
+import { LoginSchema } from "../types/userSchemas";
+import z from "zod";
 
 const userRepository = new UserRepository();
 const authService = new AuthService(userRepository);
@@ -10,12 +10,13 @@ const authService = new AuthService(userRepository);
 export class AuthController {
   async login(req: Request, res: Response): Promise<Response> {
     try {
-      const { email, password } = req.body;
-      
-      if ( !email || !password ) {
-        return res.status(400).json({ error: 'Email and password are required' });
+      const validation = LoginSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        return res.status(400).json({ error: z.treeifyError(validation.error) });
       }
-      
+
+      const { email, password } = validation.data;
       const { token, user } = await authService.login({ email, password });
 
       return res.status(200).json({ token, user });

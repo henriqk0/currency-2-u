@@ -1,15 +1,12 @@
-import { PrismaClient } from "@prisma/client/extension";
-
-const userData = PrismaClient.User
-
+import { Acronyms } from "../generated/prisma/enums";
 
 export default class User {
   id!: string;
   email!: string;
   password!: string;
-  currencyInLabel!: string;
+  currencyInLabel!: Acronyms;
   currencyInValue!: number;
-  currencyOutLabel!: string;
+  currencyOutLabel!: Acronyms;
   currencyOutValue!: number;
   lastSend!: Date | null;
   minIntervalSend!: number;
@@ -22,5 +19,3 @@ export default class User {
     }
   }
 }
-
-type CheckUserConsistency = typeof userData extends User ? true : false;

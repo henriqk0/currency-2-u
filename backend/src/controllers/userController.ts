@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import { UserRepository } from '../repositories/userRepository';
 import { UserService } from '../services/userService';
 import { ICreateUserData, IUpdateUserData } from '../repositories/iUserRepository';
-import { Acronyms } from '../generated/prisma/enums';
+import { CreateUserSchema, UpdateUserSchema } from '../types/userSchemas';
+import z from 'zod';
 
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
@@ -16,31 +17,27 @@ export class UserController {
   }  
 
   async postUser(req: Request, res: Response): Promise<Response> {
-    const user = req.body;
+    try {
+      const validation = CreateUserSchema.safeParse(req.body);
 
-    const userDto: ICreateUserData =  {
-      ...user,
-      currencyInLabel: user.currencyInLabel as Acronyms
+      if (!validation.success) {
+        return res.status(400).json({ error:  z.treeifyError(validation.error) });
+      }
+
+      const userDto: ICreateUserData = {
+        ...validation.data,
+        lastSend: null
+      };
+
+      const result = await userService.createUser(userDto);
+
+      if (result)
+        return res.status(201).json(result);
+      else
+        return res.sendStatus(400);
+    } catch (error: any) {
+      return res.status(400).json({ error: error.message });
     }
-
-    const targetCurrencyInValue = userDto.currencyInValue
-    if (targetCurrencyInValue <= 0) {
-      return res.status(400).json({error: "Desired currency needs to be positive"})
-    }
-
-
-    const targetCurrencyOutValue = userDto.currencyOutValue
-    if (targetCurrencyOutValue <= 0) {
-      return res.status(400).json({error: "Base currency needs to be positive"})
-    }
-
-
-    const result = await userService.createUser(userDto);
-
-    if (result)
-      return res.status(201).json(result);
-    else
-      return res.sendStatus(400);
   }
 
   async getById(req: Request, res: Response): Promise<Response> {
@@ -67,25 +64,17 @@ export class UserController {
       const targetUserId = req.params.id;
       const authenticatedUserId = req.userId; 
 
-      const targetCurrencyInValue = req.body.currencyInValue
-      if (targetCurrencyInValue <= 0) {
-        return res.status(400).json({error: "Desired currency needs to be positive"})
-      }
-
-      const targetCurrencyOutValue = req.body.currencyOutValue
-      if (targetCurrencyOutValue <= 0) {
-        return res.status(400).json({error: "Base currency needs to be positive"})
-      }
-
       if (targetUserId !== authenticatedUserId) {
         return res.status(403).json({error: "Forbidden: You can only update your own account."})
       }
 
-      const user = req.body;
-      const userDto: IUpdateUserData =  {
-        ...user,
-        currencyInLabel: user.currencyInLabel as Acronyms
+      const validation = UpdateUserSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        return res.status(400).json({ error: z.treeifyError(validation.error) });
       }
+
+      const userDto: IUpdateUserData = validation.data;
 
       const result = await userService.updateUser(targetUserId, userDto);
 

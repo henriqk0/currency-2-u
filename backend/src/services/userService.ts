@@ -1,6 +1,7 @@
 import User from '../models/user';
-import { IUpdateUserData, ICreateUserData, IUserRepository } from "../repositories/iUserRepository";
+import { IUpdateUserData, ICreateUserData, IUserRepository, IPutUserLastSendData } from "../repositories/iUserRepository";
 import bcrypt from 'bcrypt'
+import { removeUndefined } from '../utils/removeUndefined';
 
 const omitPassword = (user: User) => {
     const { password, ...userWithoutPassword } = user;
@@ -25,10 +26,12 @@ export class UserService {
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    const newUser = await this.userRepository.create({
-      ...data,
-      password: hashedPassword,
-    });
+    const newUser = await this.userRepository.create(
+      removeUndefined({
+        ...data,
+        password: hashedPassword,
+      })
+    );
 
     return omitPassword(newUser);
   }
@@ -51,10 +54,7 @@ export class UserService {
     if (!userExists) {
       return null; // or throw new Error('User not found to update.');
     }
-    if (data.password) {
-      const saltRoads = 10;
-      data.password = await bcrypt.hash(data.password, saltRoads);
-    }
+
     const updatedUser = await this.userRepository.update(id, data);
     if (!this.updateUser) {
       return null;
@@ -78,7 +78,7 @@ export class UserService {
       }
 
       const currentDate = new Date()
-      const updateUserDate: IUpdateUserData = {
+      const updateUserDate: IPutUserLastSendData = {
         lastSend: currentDate 
       }
 

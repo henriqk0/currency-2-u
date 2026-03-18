@@ -1,27 +1,16 @@
 import User from "../models/user";
-import { Acronyms } from "../generated/prisma/enums";
+import { CreateUserInput, UpdateUserInput } from "../types/userSchemas";
 
-export interface ICreateUserData {
-  email: string;
-  password: string;
-  currencyInLabel: Acronyms;
-  currencyInValue: number;
-  currencyOutLabel: Acronyms;
-  currencyOutValue: number;
+export interface ICreateUserData extends CreateUserInput {
   lastSend: Date | null;
-  minIntervalSend: number;
-  toSell: boolean;
 }
 
-export interface IUpdateUserData {
-  password?: string;
-  currencyInLabel?: Acronyms;
-  currencyInValue?: number;
-  currencyOutLabel?: Acronyms;
-  currencyOutValue?: number;
+export interface IUpdateUserData extends UpdateUserInput {
   lastSend?: Date | null;
-  minIntervalSend?: number;
-  toSell?: boolean;
+}
+
+export interface IPutUserLastSendData {
+  lastSend: Date;
 }
 
 export interface IUserRepository {

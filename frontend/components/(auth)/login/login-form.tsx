@@ -14,6 +14,7 @@ import Link from "next/link"
 import { useState } from "react";
 import { useRouter } from "next/navigation"
 import { showToast } from "nextjs-toast-notify"
+import { getErrorMessage } from "@/lib/utils";
 
 function LoginForm() {
   const router = useRouter();
@@ -45,7 +46,7 @@ function LoginForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Login error");
+        throw new Error(getErrorMessage(data));
       }
 
       showToast.success("Login successfully", {
@@ -59,9 +60,10 @@ function LoginForm() {
 
       router.push('/profile')
 
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
 
-      showToast.error(`${error}`, {
+      showToast.error(error.message || `${error}`, {
         duration: 4000,
         progress: true,
         position: "top-right",
