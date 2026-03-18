@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { UpdateProps } from "../types/update-user";
+import { getErrorMessage } from "@/lib/utils";
 
 
 export async function updateData(props: UpdateProps) {
@@ -20,7 +21,7 @@ export async function updateData(props: UpdateProps) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.error || "Update error");
+    throw new Error(getErrorMessage(data));
   }
 
   revalidatePath("/profile");

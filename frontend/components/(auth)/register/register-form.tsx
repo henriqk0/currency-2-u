@@ -22,6 +22,7 @@ import { useBoolean } from "@/hooks/use-boolean"
 import { Switch } from "@/components/ui/switch"
 import { useRouter } from "next/navigation"
 import { showToast } from "nextjs-toast-notify"
+import { getErrorMessage } from "@/lib/utils";
 
 
 interface ICreateUserData {
@@ -81,7 +82,7 @@ function RegisterForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Register error");
+        throw new Error(getErrorMessage(data));
       }
 
       showToast.success("Registration successfully", {
@@ -95,9 +96,9 @@ function RegisterForm() {
 
       router.push('/') 
 
-    } catch (error) {
-
-      showToast.error(`${error}`, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      showToast.error(error.message || `${error}`, {
         duration: 4000,
         progress: true,
         position: "top-right",

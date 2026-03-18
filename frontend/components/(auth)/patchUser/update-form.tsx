@@ -64,9 +64,9 @@ function UpdateUserForm({token, id, userData }: UpdateProps) {
 
         setOpen(false);
 
-      } catch (error) {
-
-        showToast.error(`${error}`, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        showToast.error(error.message || `${error}`, {
           duration: 4000,
           progress: true,
           position: "top-right",

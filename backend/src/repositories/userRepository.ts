@@ -1,5 +1,7 @@
 import { PrismaClient } from '../generated/prisma/client';
 import User from '../models/user';
+import { UpdateUserSchema } from '../types/userSchemas';
+import { removeUndefined } from '../utils/removeUndefined';
 import { ICreateUserData, IUpdateUserData, IUserRepository } from './iUserRepository';
 
 const prisma = new PrismaClient;
@@ -22,9 +24,10 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(id: string, data: IUpdateUserData): Promise<User | null> {
+    const parsedData = removeUndefined( UpdateUserSchema.parse(data) );
     return await prisma.user.update({
       where: { id },
-      data,
+      data: parsedData,
     });
   }
 
