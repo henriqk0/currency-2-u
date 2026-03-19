@@ -4,7 +4,13 @@ Backend module builded using Express.js framework with, mainly.
 
 #### Usage
 
-First, create a .env file in this directory and populate it with the following variables, which must contain valid values:
+First, run
+
+```pnpm install```
+
+at terminal
+
+Then, create a .env file in this directory and populate it with the following variables, which must contain valid values:
 
 ```env
 PORT=
