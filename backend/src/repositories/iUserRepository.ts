@@ -5,9 +5,7 @@ export interface ICreateUserData extends CreateUserInput {
   lastSend: Date | null;
 }
 
-export interface IUpdateUserData extends UpdateUserInput {
-  lastSend?: Date | null;
-}
+export interface IUpdateUserData extends UpdateUserInput {}
 
 export interface IPutUserLastSendData {
   lastSend: Date;

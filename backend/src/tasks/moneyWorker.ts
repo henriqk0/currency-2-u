@@ -60,58 +60,38 @@ async function obtainConversionTable(): Promise<ConversionTableDictFormatted> {
   const brEUR: NumberTuple = await runScrapper("EUR", "BRL")
   const usaETH: NumberTuple = await runScrapper("ETH", "USD")
 
-  const brETH: NumberTuple = [ 1, usaETH[1] * brUSD[1] ]     
-
-  const btcBRL: NumberTuple = [ 1, 1 / brBTC[1] ]
-
-  const eurBRL: NumberTuple = [ 1, 1 / brEUR[1] ]
-  const eurUSD: NumberTuple = [ 1, brEUR[1]/brUSD[1] ]
-  const eurBTC: NumberTuple = [ 1, brBTC[1]/brEUR[1] ]
-  const eurETH: NumberTuple = [ 1, brETH[1]/brEUR[1] ]
-
-  const usaBRL: NumberTuple = [ 1, 1 / brUSD[1] ]
-  const usaEUR: NumberTuple = [ 1, brUSD[1]/brEUR[1] ]
-  const usaBTC: NumberTuple = [ 1, brBTC[1]/brUSD[1] ]
-
-  const btcUSD: NumberTuple = [ 1,  1 / usaBTC[1]]
-  const btcETH: NumberTuple = [ 1,  usaETH[1] / usaBTC[1] ]
-  const btcEUR: NumberTuple = [ 1,  usaETH[1] / usaBTC[1] ]
-
-  const ethUSD: NumberTuple = [ 1, 1 / usaETH[1] ]
-  const ethEUR: NumberTuple = [ 1, 1 / eurETH[1] ]
-  const ethBTC: NumberTuple = [ 1, 1 / btcETH[1] ]
-  const ethBRL: NumberTuple = [ 1, 1 / brETH[1] ]
+  const brETH: NumberTuple = [ 1, usaETH[1] * brUSD[1] ]
 
   const conversionTable: ConversionTableDictFormatted = {
     BRL: {
-      BTC: brBTC,
-      USD: brUSD,
-      EUR: brEUR,
-      ETH: brETH,
+      BTC: [1, 1 / brBTC[1]],
+      USD: [1, 1 / brUSD[1]],
+      EUR: [1, 1 / brEUR[1]],
+      ETH: [1, 1 / brETH[1]],
     },
     USD: {
-      BTC: usaBTC,
-      BRL: usaBRL,
-      EUR: usaEUR,
-      ETH: usaETH,
+      BTC: [1, brUSD[1] / brBTC[1]],
+      BRL: brUSD,
+      EUR: [1, brUSD[1] / brEUR[1]],
+      ETH: [1, 1 / usaETH[1]],
     },
     EUR: {
-      BTC: eurBTC,
-      USD: eurUSD,
-      BRL: eurBRL,
-      ETH: eurETH,
+      BTC: [1, brEUR[1] / brBTC[1]],
+      USD: [1, brEUR[1] / brUSD[1]],
+      BRL: brEUR,
+      ETH: [1, brEUR[1] / brETH[1]],
     },
     ETH: {
-      BTC: ethBTC,
-      USD: ethUSD,
-      EUR: ethEUR,
-      BRL: ethBRL,
+      BTC: [1, brETH[1] / brBTC[1]],
+      USD: usaETH,
+      EUR: [1, brETH[1] / brEUR[1]],
+      BRL: brETH,
     },
     BTC: {
-      BRL: btcBRL,
-      USD: btcUSD,
-      EUR: btcEUR,
-      ETH: btcETH,
+      BRL: brBTC,
+      USD: [1, brBTC[1] / brUSD[1]],
+      EUR: [1, brBTC[1] / brEUR[1]],
+      ETH: [1, brBTC[1] / brETH[1]],
     },
   }
 
