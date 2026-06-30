@@ -134,7 +134,7 @@ async function runScrapper(fromAcronym: string, toAcronym: string): Promise<Numb
     const page = await browser.newPage();
     await page.goto(`https://www.google.com/finance/quote/${fromAcronym}-${toAcronym}`);
 
-    const value = await page.$eval('.YMlKec.fxKbKc', (el: { textContent: string; }) => el.textContent.trim());
+    const value = await page.$eval('div.N6SYTe span[jsname="Pdsbrc"]', (el: { textContent: string; }) => el.textContent.trim());
 
     const currencyNumber = Number(value.replace(/,/g, ''));
 
