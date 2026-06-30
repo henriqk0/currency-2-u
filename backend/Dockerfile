@@ -36,6 +36,6 @@ RUN pnpm run build
 
 # to set the production and clean the heavy packages
 ENV NODE_ENV=production
-RUN pnpm prune --prod
+RUN CI=true pnpm prune --prod
 
 CMD ["pnpm", "start:api"]
