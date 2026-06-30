@@ -26,6 +26,7 @@ export const UpdateUserSchema = z.object({
   currencyOutValue: z.number().positive("Base currency value needs to be positive").optional(),
   minIntervalSend: z.number().int().min(1, "Minimum interval must be at least 1 day").optional(),
   toSell: z.boolean().optional(),
+  lastSend: z.date().nullable().optional(),
 });
 
 export type LoginInput = z.infer<typeof LoginSchema>;

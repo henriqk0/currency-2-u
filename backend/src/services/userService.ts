@@ -56,7 +56,7 @@ export class UserService {
     }
 
     const updatedUser = await this.userRepository.update(id, data);
-    if (!this.updateUser) {
+    if (!updatedUser) {
       return null;
     }
 
