@@ -90,15 +90,12 @@ export class UserService {
     if (!userExists) {
       return false; // or throw new Error('User not found to update.');
     }
-    
-    const lastEmailSentDate = userExists.lastSend
 
-    const daysSinceReference = lastEmailSentDate ? Number(daysSinceOrNull(lastEmailSentDate)): 0
+    if (!userExists.lastSend) return true; // never sent → can send
 
-    const interval = Number(userExists.minIntervalSend)
-
+    const daysSinceReference = daysSinceOrNull(userExists.lastSend)
     if (daysSinceReference === null) return true
 
-    return daysSinceReference >= interval
+    return daysSinceReference >= Number(userExists.minIntervalSend)
   }
 }

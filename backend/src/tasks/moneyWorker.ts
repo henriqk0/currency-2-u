@@ -28,18 +28,19 @@ export async function pickCurrencyValuesAndFillEmailQueue () {
     const userOutValue = user.currencyOutValue 
     const userToSell = user.toSell 
 
-    const currentUserDesirableCurrencyValues = conversionTable[userInLabel]![userOutLabel]
+    const currentUserDesirableCurrencyValues = conversionTable[userInLabel]![userOutLabel]!
+    const rate = currentUserDesirableCurrencyValues[1] / currentUserDesirableCurrencyValues[0]
     
+    if (!rate || !isFinite(rate)) return;
+
     const isSandable: boolean = await userService.canSendEmail(user.id)
 
     if ( 
       isSandable &&
       (
-        userToSell &&
-        userOutValue / userInValue < currentUserDesirableCurrencyValues![1] / currentUserDesirableCurrencyValues![0] ) ||
-      (
-        !userToSell &&
-        userOutValue / userInValue > currentUserDesirableCurrencyValues![1] / currentUserDesirableCurrencyValues![0] )
+        (userToSell && userOutValue / userInValue < rate) ||
+        (!userToSell && userOutValue / userInValue > rate)
+      )
     ) {
       const job: EmailJobData = {email: user.email, data: currentUserDesirableCurrencyValues!}
 
